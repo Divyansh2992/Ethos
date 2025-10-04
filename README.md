@@ -1,12 +1,13 @@
 # Ethos — Campus Security & Entity Resolution System
 
-Ethos is a hackathon prototype for a campus security and entity resolution dashboard. It demonstrates how cross-source signals (face images, card access, WiFi associations, and activity logs) can be combined to:
+Ethos is a hackathon prototype for campus security teams. It ties together multiple data sources — face images, card access, WiFi logs, and activity streams — to help operators quickly find people or devices and investigate incidents.
 
-- Resolve identities across multiple systems (students, staff, devices, assets).
-- Surface security alerts (missing assets, anomalous behaviors, unauthorized access).
-- Visualize activity timelines and predictive monitoring for operations teams.
+Key capabilities:
+- Entity resolution across systems (students, staff, devices, assets)
+- Real-time security alerts (missing assets, anomalous behavior, unauthorized access)
+- Activity timelines and simple predictive monitoring to help SOC teams prioritize work
 
-This README also documents a recent accidental commit of sensitive files and the steps taken to mitigate it (see the "Security note" section below).
+This README also documents a recent accidental commit of sensitive files and the mitigation steps taken (see "Security note").
 
 ## Live app overview
 The frontend provides several main views:
@@ -21,13 +22,18 @@ The frontend provides several main views:
 - IT and facilities staff responsible for assets and network security
 - Investigators who need to stitch together cross-source evidence quickly
 
-### Typical user flow
-1. Operator sees a high-level alert on the Dashboard (e.g., missing asset or anomalous device access).
-2. They drill into Security Alerts to filter/search the alert and view details.
-3. From an alert or a manual search, the operator uses Entity Resolution to search by name, ID, email, card number, or device hash.
-4. The system returns candidate profiles; the operator selects one profile to view details, cross-source identifiers, face thumbnail(s), activity timeline, and investigation actions.
+### Quick how-to (one-minute)
+1. Open the Dashboard to see active alerts and overall health.
+2. Click a Security Alert to view details and evidence.
+3. Use Entity Resolution (single page) to search by name, ID, email, card number or device hash.
+4. From the search results pick the single entity you want to investigate — the app shows a compact list and then a detailed view for the selected entity.
 
-Note: the Entity Resolution UI shows two images in the README screenshots — one is the search results (overview) and another is the selected entity detail (detail). In the live app the operator typically selects a single resolved entity to investigate; the two images simply show the two UI states (list vs detail) for demonstration.
+Why there are two Entity Resolution screenshots
+The Entity Resolution area is a single page in the app. The README shows two images from that page intentionally:
+- the first image shows the search results (overview),
+- the second image shows the same page after the operator selects one entity (detail).
+
+This demonstrates the two main states of the same page (list → selected detail) rather than two separate pages.
 
 ## Example screenshots
 Below are screenshots of the running frontend UI (copied from `frontend/images/` into `docs/images/`):
@@ -98,7 +104,7 @@ To fully remove the files from all commits, rewrite history with `git-filter-rep
 
 ---
 
-If you'd like, I can (a) copy the sample images into `docs/images/` for you here, (b) run a history purge and force-push (with confirmation), or (c) add pre-commit hooks to prevent future leaks. Tell me which and I'll proceed.
+If you'd like, I can (a) copy additional screenshots into `docs/images/`, (b) run a history purge and force-push (with confirmation), or (c) add pre-commit hooks (Husky) to prevent future leaks. Tell me which and I'll proceed.
 
 ### Product Development Challenge PDF
 If you have a PDF named `Product Development Challenge.pdf` (containing the spec or pitch deck), place it in the repo root or `docs/` and I can include a short summary and link from this README. If you want, upload the PDF and I'll extract the key points and wire them into this README.
