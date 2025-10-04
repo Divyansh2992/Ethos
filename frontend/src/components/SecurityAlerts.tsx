@@ -38,8 +38,8 @@ const SecurityAlerts: React.FC = () => {
   const mockAlerts: SecurityAlert[] = [
     {
       id: 'alert_001',
-      entityId: 'ST20045',
-      entityName: 'Sarah Johnson',
+      entityId: 'S57560',
+      entityName: 'Aarav Desai',
       entityType: 'student',
       alertType: 'missing',
       severity: 'high',
@@ -56,8 +56,8 @@ const SecurityAlerts: React.FC = () => {
     },
     {
       id: 'alert_002',
-      entityId: 'LB445',
-      entityName: 'Lab Equipment LB-445',
+      entityId: 'LAB',
+      entityName: 'Lab Equipment LAB-445',
       entityType: 'asset',
       alertType: 'missing',
       severity: 'critical',
@@ -74,8 +74,8 @@ const SecurityAlerts: React.FC = () => {
     },
     {
       id: 'alert_003',
-      entityId: 'ST20001',
-      entityName: 'John Doe',
+      entityId: 'S47028',
+      entityName: 'Sana Patel',
       entityType: 'student',
       alertType: 'anomalous_behavior',
       severity: 'medium',
@@ -91,7 +91,7 @@ const SecurityAlerts: React.FC = () => {
     },
     {
       id: 'alert_004',
-      entityId: 'DH_xyz789',
+      entityId: 'DH9975108469fb',
       entityName: 'Unknown Device',
       entityType: 'device',
       alertType: 'device_anomaly',
@@ -108,8 +108,8 @@ const SecurityAlerts: React.FC = () => {
     },
     {
       id: 'alert_005',
-      entityId: 'SF5002',
-      entityName: 'Dr. Robert Kim',
+      entityId: 'T2556',
+      entityName: 'Ishaan Rao',
       entityType: 'staff',
       alertType: 'unauthorized_access',
       severity: 'high',
@@ -132,21 +132,21 @@ const SecurityAlerts: React.FC = () => {
       description: 'Multiple entities accessing facilities between 11 PM - 5 AM',
       risk_level: 'medium',
       occurrences: 12,
-      entities_affected: ['ST20001', 'ST20023', 'SF5001']
+      entities_affected: ['S16175', 'S59009', 'S79352']
     },
     {
       pattern: 'Rapid Location Changes',
       description: 'Entities appearing in multiple distant locations within short time windows',
       risk_level: 'high',
       occurrences: 3,
-      entities_affected: ['ST20045', 'LB445']
+      entities_affected: ['S16006', 'LAB445']
     },
     {
       pattern: 'Unregistered Devices',
       description: 'Unknown devices attempting to connect to campus network',
       risk_level: 'high',
       occurrences: 8,
-      entities_affected: ['DH_xyz789', 'DH_abc123']
+      entities_affected: ['DHa12fbd7e9a12', 'DH3384ceae5090']
     }
   ];
 

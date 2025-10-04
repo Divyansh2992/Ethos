@@ -18,8 +18,8 @@ const PredictiveMonitoring: React.FC = () => {
 
   const mockPredictions: Prediction[] = [
     {
-      entityId: 'ST20001',
-      entityName: 'John Doe',
+      entityId: 'S68445',
+      entityName: 'Rohan Gupta',
       predictedLocation: 'Engineering Building - Lab 204',
       probability: 87.3,
       timeWindow: 'Next 2 hours',
@@ -36,8 +36,8 @@ const PredictiveMonitoring: React.FC = () => {
 
   const missingEntities = [
     {
-      id: 'ST20045',
-      name: 'Sarah Johnson',
+      id: 'S34050',
+      name: 'Priya Kumar',
       type: 'Student',
       lastSeen: '2024-01-14T16:30:00Z',
       location: 'Library - Study Room 105',
@@ -51,7 +51,7 @@ const PredictiveMonitoring: React.FC = () => {
     },
     {
       id: 'LB445',
-      name: 'Lab Equipment LB-445',
+      name: 'Lab Equipment LAB_445',
       type: 'Asset',
       lastSeen: '2024-01-15T08:45:00Z',
       location: 'Chemistry Lab A',
@@ -100,9 +100,9 @@ const PredictiveMonitoring: React.FC = () => {
               onChange={(e) => setSelectedEntity(e.target.value)}
               className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-blue-400 focus:outline-none"
             >
-              <option value="ST20001">John Doe (ST20001)</option>
-              <option value="SF5001">Sarah Johnson (SF5001)</option>
-              <option value="LB445">Lab Equipment LB-445</option>
+              <option value="ST20001">Rohan Gupta (S68445)</option>
+              <option value="SF5001">Priya Kumar (S34050)</option>
+              <option value="LB445">Lab Equipment LAB_445</option>
             </select>
           </div>
           

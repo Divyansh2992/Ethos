@@ -37,9 +37,9 @@ const Dashboard: React.FC = () => {
   ];
 
   const recentAlerts = [
-    { id: 1, entity: 'John Doe (ST20001)', type: 'Missing', duration: '14 hours', severity: 'high' },
-    { id: 2, entity: 'Lab Equipment #LB-445', type: 'Unusual Access', duration: '2 hours', severity: 'medium' },
-    { id: 3, entity: 'Sarah Johnson (ST20045)', type: 'Anomalous Pattern', duration: '6 hours', severity: 'low' },
+    { id: 1, entity: 'Aarav Gupta (S20328)', type: 'Missing', duration: '14 hours', severity: 'high' },
+    { id: 2, entity: 'Lab Equipment #LAB_305', type: 'Unusual Access', duration: '2 hours', severity: 'medium' },
+    { id: 3, entity: 'Priya Malhotra (T7369)', type: 'Anomalous Pattern', duration: '6 hours', severity: 'low' },
   ];
 
   const topEntities = [
