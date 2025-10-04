@@ -38,14 +38,11 @@ This demonstrates the two main states of the same page (list → selected detail
 ## Example screenshots
 Below are screenshots of the running frontend UI (copied from `frontend/images/` into `docs/images/`):
 
-Dashboard
+**Dashboard**
 ![Dashboard](docs/images/Dashboard.png)
 
-Entity Resolution (overview)
-![Entity Resolution 1](docs/images/Entity_Resolution1.png)
-
-Entity Resolution (detail)
-![Entity Resolution 2](docs/images/Entity_Resolution2.png)
+**Entity Resolution**
+![Entity Resolution 1](docs/images/Entity_Resolution.png)
 
 Activity Timeline
 ![Timeline](docs/images/timeline.png)
