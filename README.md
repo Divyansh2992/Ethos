@@ -38,20 +38,20 @@ This demonstrates the two main states of the same page (list → selected detail
 ## Example screenshots
 Below are screenshots of the running frontend UI (copied from `frontend/images/` into `docs/images/`):
 
-**Dashboard**
-![Dashboard](docs/images/Dashboard.png)
+### Dashboard
+<img src="docs/images/Dashboard.png" alt="Dashboard" width="800" />
 
-**Entity Resolution**
-![Entity Resolution 1](docs/images/Entity_Resolution.png)
+### Entity Resolution
+<img src="docs/images/Entity_Resolution.png" alt="Entity Resolution" width="800" />
 
-Activity Timeline
-![Timeline](docs/images/timeline.png)
+### Activity Timeline
+<img src="docs/images/timeline.png" alt="Timeline" width="800" />
 
-Predictive Monitoring
-![Predictive Monitoring](docs/images/predictive_monitoring.png)
+### Predictive Monitoring
+<img src="docs/images/predictive_monitoring.png" alt="Predictive Monitoring" width="800" />
 
-Security Alerts
-![Security Alerts](docs/images/security.png)
+### Security Alerts
+<img src="docs/images/security.png" alt="Security Alerts" width="800" />
 
 ## How to run (developer)
 1. Install dependencies (root has a `package.json` that includes both backend and frontend scripts):
