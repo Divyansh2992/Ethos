@@ -17,11 +17,25 @@ The frontend provides several main views:
 - Security Alerts — searchable, filterable list of alerts with investigation tools.
 
 ## Example screenshots
-Below are a few representative face images (copy them into `docs/images/` to display here). They are sourced from `backend/data/face_images/` in this repo.
+Below are screenshots of the running frontend UI (copied from `frontend/images/` into `docs/images/`):
 
-![Face sample 1](docs/images/F100000.jpg)
-![Face sample 2](docs/images/F100010.jpg)
-![Face sample 3](docs/images/F100020.jpg)
+Dashboard
+![Dashboard](docs/images/Dashboard.png)
+
+Entity Resolution (overview)
+![Entity Resolution 1](docs/images/Entity_Resolution1.png)
+
+Entity Resolution (detail)
+![Entity Resolution 2](docs/images/Entity_Resolution2.png)
+
+Activity Timeline
+![Timeline](docs/images/timeline.png)
+
+Predictive Monitoring
+![Predictive Monitoring](docs/images/predictive_monitoring.png)
+
+Security Alerts
+![Security Alerts](docs/images/security.png)
 
 ## How to run (developer)
 1. Install dependencies (root has a `package.json` that includes both backend and frontend scripts):
