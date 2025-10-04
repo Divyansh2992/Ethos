@@ -16,6 +16,19 @@ The frontend provides several main views:
 - Predictive Monitoring — simple forecasting/alerts for anomalous patterns.
 - Security Alerts — searchable, filterable list of alerts with investigation tools.
 
+### Target users
+- Security Operations Center (SOC) teams and campus security officers
+- IT and facilities staff responsible for assets and network security
+- Investigators who need to stitch together cross-source evidence quickly
+
+### Typical user flow
+1. Operator sees a high-level alert on the Dashboard (e.g., missing asset or anomalous device access).
+2. They drill into Security Alerts to filter/search the alert and view details.
+3. From an alert or a manual search, the operator uses Entity Resolution to search by name, ID, email, card number, or device hash.
+4. The system returns candidate profiles; the operator selects one profile to view details, cross-source identifiers, face thumbnail(s), activity timeline, and investigation actions.
+
+Note: the Entity Resolution UI shows two images in the README screenshots — one is the search results (overview) and another is the selected entity detail (detail). In the live app the operator typically selects a single resolved entity to investigate; the two images simply show the two UI states (list vs detail) for demonstration.
+
 ## Example screenshots
 Below are screenshots of the running frontend UI (copied from `frontend/images/` into `docs/images/`):
 
@@ -86,3 +99,6 @@ To fully remove the files from all commits, rewrite history with `git-filter-rep
 ---
 
 If you'd like, I can (a) copy the sample images into `docs/images/` for you here, (b) run a history purge and force-push (with confirmation), or (c) add pre-commit hooks to prevent future leaks. Tell me which and I'll proceed.
+
+### Product Development Challenge PDF
+If you have a PDF named `Product Development Challenge.pdf` (containing the spec or pitch deck), place it in the repo root or `docs/` and I can include a short summary and link from this README. If you want, upload the PDF and I'll extract the key points and wire them into this README.
