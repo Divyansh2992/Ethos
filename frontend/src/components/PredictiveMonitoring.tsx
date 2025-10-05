@@ -1,38 +1,207 @@
 import React, { useState } from 'react';
-import { Brain, TrendingUp, AlertCircle, CheckCircle, MapPin, Clock, Target } from 'lucide-react';
+import { Brain, TrendingUp, AlertCircle, CheckCircle, MapPin, Target, BarChart3, Activity } from 'lucide-react';
+import Plot from 'react-plotly.js';
 
-interface Prediction {
-  entityId: string;
-  entityName: string;
-  predictedLocation: string;
-  probability: number;
-  timeWindow: string;
-  reasoning: string[];
-  confidence: number;
-  missingDataPoints: string[];
-}
 
 const PredictiveMonitoring: React.FC = () => {
-  const [selectedEntity, setSelectedEntity] = useState('ST20001');
+  // Use real entity IDs (match mockPredictions / missingEntities) so selection drives the shown prediction
+  const [selectedEntity, setSelectedEntity] = useState('S68445');
   const [predictionTime, setPredictionTime] = useState('current');
 
-  const mockPredictions: Prediction[] = [
-    {
-      entityId: 'S68445',
-      entityName: 'Rohan Gupta',
-      predictedLocation: 'Engineering Building - Lab 204',
-      probability: 87.3,
-      timeWindow: 'Next 2 hours',
-      reasoning: [
-        'Historical pattern shows 85% probability of lab attendance on Tuesdays at 2 PM',
-        'Last WiFi connection from Student Center indicates movement toward Engineering area',
-        'CS472 lab session scheduled at 2:30 PM according to academic calendar',
-        'Previous week showed consistent lab attendance pattern'
-      ],
-      confidence: 87.3,
-      missingDataPoints: ['Current card swipe location', 'Active WiFi connection']
-    }
-  ];
+  const getPredictionsForTime = (timeWindow: string) => {
+    const predictions = {
+      'current': {
+        'S68445': {
+          entityId: 'S68445',
+          entityName: 'Rohan Gupta',
+          predictedLocation: 'Engineering Building - Lab 204',
+          probability: 87.3,
+          timeWindow: 'Current',
+          reasoning: [
+            'Currently in Engineering Building based on last WiFi connection',
+            'Lab session in progress - high probability of remaining in current location',
+            'No movement indicators detected in the last 30 minutes',
+            'Historical pattern shows 90% probability of staying in lab during active sessions'
+          ],
+          confidence: 87.3,
+          missingDataPoints: ['Real-time location verification', 'Active session status']
+        },
+        'S34050': {
+          entityId: 'S34050',
+          entityName: 'Priya Kumar',
+          predictedLocation: 'Library - Study Room 105',
+          probability: 78.5,
+          timeWindow: 'Current',
+          reasoning: [
+            'Last observed in Library Study Room 105',
+            'Study session likely ongoing based on historical patterns',
+            'No exit indicators from library access system',
+            'High probability of continued study session'
+          ],
+          confidence: 78.5,
+          missingDataPoints: ['Current study session status', 'Library exit logs']
+        },
+        'LB445': {
+          entityId: 'LB445',
+          entityName: 'Lab Equipment LAB_445',
+          predictedLocation: 'Chemistry Lab A (stationary)',
+          probability: 95.2,
+          timeWindow: 'Current',
+          reasoning: [
+            'Equipment stationary in Chemistry Lab A',
+            'No maintenance or movement logs in system',
+            'High probability of remaining in current location',
+            'Equipment tracking shows no recent movement'
+          ],
+          confidence: 95.2,
+          missingDataPoints: ['Physical verification', 'Maintenance schedule check']
+        }
+      },
+      '1hour': {
+        'S68445': {
+          entityId: 'S68445',
+          entityName: 'Rohan Gupta',
+          predictedLocation: 'Engineering Building - Lab 204',
+          probability: 82.1,
+          timeWindow: 'Next 4 Hours',
+          reasoning: [
+            'Lab session expected to continue for the next 2-3 hours',
+            'Historical pattern shows 85% probability of remaining in lab',
+            'No conflicting appointments or meetings scheduled',
+            'Previous week showed consistent lab attendance pattern'
+          ],
+          confidence: 82.1,
+          missingDataPoints: ['Session end time confirmation', 'Next appointment status']
+        },
+        'S34050': {
+          entityId: 'S34050',
+          entityName: 'Priya Kumar',
+          predictedLocation: 'Student Center Cafeteria',
+          probability: 68.3,
+          timeWindow: 'Next 4 Hours',
+          reasoning: [
+            'Study session expected to conclude within the next hour',
+            'Historical pattern shows movement to cafeteria after study',
+            'Lunch time approaching - high probability of food court visit',
+            'Previous behavior indicates post-study meal routine'
+          ],
+          confidence: 68.3,
+          missingDataPoints: ['Study session end time', 'Meal schedule']
+        },
+        'LB445': {
+          entityId: 'LB445',
+          entityName: 'Lab Equipment LAB_445',
+          predictedLocation: 'Chemistry Lab A (stationary)',
+          probability: 92.8,
+          timeWindow: 'Next 4 Hours',
+          reasoning: [
+            'Equipment remains stationary unless maintenance scheduled',
+            'No maintenance logs for next 4 hours',
+            'High probability of continued stationary state',
+            'Equipment tracking shows stable location'
+          ],
+          confidence: 92.8,
+          missingDataPoints: ['Maintenance schedule', 'Equipment status check']
+        }
+      },
+      '2hours': {
+        'S68445': {
+          entityId: 'S68445',
+          entityName: 'Rohan Gupta',
+          predictedLocation: 'Engineering Building - Lab 204',
+          probability: 75.4,
+          timeWindow: 'Next 8 Hours',
+          reasoning: [
+            'Lab session expected to end within the next 6 hours',
+            'Historical pattern shows 75% probability of remaining in lab',
+            'Possible transition to study area or library',
+            'Previous week showed consistent lab attendance pattern'
+          ],
+          confidence: 75.4,
+          missingDataPoints: ['Session end time', 'Next activity schedule']
+        },
+        'S34050': {
+          entityId: 'S34050',
+          entityName: 'Priya Kumar',
+          predictedLocation: 'Student Center Cafeteria',
+          probability: 65.2,
+          timeWindow: 'Next 8 Hours',
+          reasoning: [
+            'Activity in Student Center expected for the next 2-3 hours, then transition',
+            'Historical evening patterns show cafeteria visit',
+            'Moderate likelihood of returning to dormitory after meal',
+            'Previous behavior indicates post-study meal routine'
+          ],
+          confidence: 65.2,
+          missingDataPoints: ['Study session end time', 'Evening schedule']
+        },
+        'LB445': {
+          entityId: 'LB445',
+          entityName: 'Lab Equipment LAB_445',
+          predictedLocation: 'Chemistry Lab A (stationary)',
+          probability: 89.5,
+          timeWindow: 'Next 8 Hours',
+          reasoning: [
+            'Equipment likely to remain stationary',
+            'No maintenance scheduled for next 8 hours',
+            'High probability of continued stationary state',
+            'Equipment tracking shows stable location'
+          ],
+          confidence: 89.5,
+          missingDataPoints: ['Maintenance schedule', 'Equipment status']
+        }
+      },
+      '4hours': {
+        'S68445': {
+          entityId: 'S68445',
+          entityName: 'Rohan Gupta',
+          predictedLocation: 'Library - Study Area',
+          probability: 58.7,
+          timeWindow: 'Next 12 Hours',
+          reasoning: [
+            'Lab session expected to conclude within the next 10 hours',
+            'Historical pattern shows transition to library study',
+            'Evening study session likely in library',
+            'Previous week showed consistent study patterns'
+          ],
+          confidence: 58.7,
+          missingDataPoints: ['Evening schedule', 'Study preferences']
+        },
+        'S34050': {
+          entityId: 'S34050',
+          entityName: 'Priya Kumar',
+          predictedLocation: 'Dormitory Building A',
+          probability: 72.1,
+          timeWindow: 'Next 12 Hours',
+          reasoning: [
+            'Return to dormitory expected within the next 6-8 hours',
+            'Historical evening patterns show return to dormitory',
+            'High probability of evening rest and study in room',
+            'Previous behavior indicates dormitory return pattern'
+          ],
+          confidence: 72.1,
+          missingDataPoints: ['Evening schedule', 'Dormitory access patterns']
+        },
+        'LB445': {
+          entityId: 'LB445',
+          entityName: 'Lab Equipment LAB_445',
+          predictedLocation: 'Chemistry Lab A (stationary)',
+          probability: 85.3,
+          timeWindow: 'Next 12 Hours',
+          reasoning: [
+            'Equipment likely to remain stationary',
+            'Possible maintenance check in 9 hours',
+            'Moderate probability of continued stationary state',
+            'Equipment tracking shows stable location'
+          ],
+          confidence: 85.3,
+          missingDataPoints: ['Maintenance schedule', 'Equipment status']
+        }
+      }
+    };
+
+    return predictions[timeWindow as keyof typeof predictions] || predictions['current'];
+  };
 
   const missingEntities = [
     {
@@ -84,6 +253,200 @@ const PredictiveMonitoring: React.FC = () => {
     return 'text-red-400';
   };
 
+  // Chart data preparation
+  const getProbabilityChartData = () => {
+    const predictions = getPredictionsForTime(predictionTime);
+    const current = predictions[selectedEntity as keyof typeof predictions];
+    if (!current) return null;
+
+    const locations = [
+      { name: current.predictedLocation, probability: current.probability },
+      { name: 'Alternative Location 1', probability: 100 - current.probability - 5 },
+      { name: 'Alternative Location 2', probability: 3 },
+      { name: 'Other Locations', probability: 2 }
+    ];
+
+    return {
+      data: [{
+        x: locations.map(l => l.name),
+        y: locations.map(l => l.probability),
+        type: 'bar' as const,
+        marker: {
+          color: locations.map(l => 
+            l.probability >= 80 ? '#10b981' : 
+            l.probability >= 60 ? '#f59e0b' : '#ef4444'
+          )
+        }
+      }],
+      layout: {
+        title: { text: `Location Probability Distribution - ${current.entityName}` },
+        xaxis: { title: { text: 'Predicted Locations' } },
+        yaxis: { title: { text: 'Probability (%)' } },
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#e5e7eb' },
+        margin: { t: 50, b: 100, l: 50, r: 50 }
+      }
+    };
+  };
+
+  const getLocationDistributionData = () => {
+    // Mock location distribution data for the selected entity
+    const locationData = {
+      'S68445': [
+        { label: 'Engineering Building', value: 45 },
+        { label: 'Library', value: 25 },
+        { label: 'Student Center', value: 15 },
+        { label: 'Dormitory', value: 10 },
+        { label: 'Other', value: 5 }
+      ],
+      'S34050': [
+        { label: 'Library', value: 50 },
+        { label: 'Dormitory', value: 25 },
+        { label: 'Student Center', value: 15 },
+        { label: 'Engineering Building', value: 7 },
+        { label: 'Other', value: 3 }
+      ],
+      'LB445': [
+        { label: 'Chemistry Lab A', value: 90 },
+        { label: 'Maintenance Room', value: 5 },
+        { label: 'Storage Facility', value: 3 },
+        { label: 'Other Labs', value: 2 }
+      ]
+    };
+
+    const data = locationData[selectedEntity as keyof typeof locationData] || locationData['S68445'];
+
+    return {
+      data: [{
+        labels: data.map(d => d.label),
+        values: data.map(d => d.value),
+        type: 'pie' as const,
+        marker: {
+          colors: ['#4a9eff', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+        },
+        textinfo: 'label+percent' as const,
+        textposition: 'outside' as const
+      }],
+      layout: {
+        title: { text: 'Location Distribution' },
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#e5e7eb' },
+        margin: { t: 50, b: 50, l: 50, r: 50 },
+        showlegend: true,
+        legend: {
+          orientation: 'v' as const,
+          x: 1.05,
+          y: 0.5
+        }
+      }
+    };
+  };
+
+  const getConfidenceTrendData = () => {
+    // Mock confidence trend over time - changes based on prediction time
+    const timeData = {
+      'current': {
+        hours: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+        confidence: [75, 78, 85, 87, 82, 80],
+        title: 'Prediction Confidence Trend (24h)'
+      },
+      '1hour': {
+        hours: ['Now', '+1hr', '+2hr', '+3hr', '+4hr'],
+        confidence: [87, 85, 82, 78, 75],
+        title: 'Prediction Confidence Trend (Next 4 Hours)'
+      },
+      '2hours': {
+        hours: ['Now', '+2hr', '+4hr', '+6hr', '+8hr'],
+        confidence: [87, 84, 80, 76, 72],
+        title: 'Prediction Confidence Trend (Next 8 Hours)'
+      },
+      '4hours': {
+        hours: ['Now', '+3hr', '+6hr', '+9hr', '+12hr'],
+        confidence: [87, 82, 75, 68, 62],
+        title: 'Prediction Confidence Trend (Next 12 Hours)'
+      }
+    };
+
+    const currentTimeData = timeData[predictionTime as keyof typeof timeData] || timeData['current'];
+
+    return {
+      data: [{
+        x: currentTimeData.hours,
+        y: currentTimeData.confidence,
+        type: 'scatter' as const,
+        mode: 'lines+markers' as const,
+        fill: 'tonexty' as const,
+        line: { color: '#10b981', width: 3 },
+        marker: { size: 8, color: '#10b981' }
+      }],
+      layout: {
+        title: { text: currentTimeData.title },
+        xaxis: { title: { text: 'Time' } },
+        yaxis: { title: { text: 'Confidence (%)' } },
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#e5e7eb' },
+        margin: { t: 50, b: 50, l: 50, r: 50 }
+      }
+    };
+  };
+
+  const getLocationHeatmapData = () => {
+    // Mock location activity heatmap - changes based on prediction time
+    const locations = ['Library', 'Engineering', 'Student Center', 'Dormitory', 'Lab A', 'Lab B'];
+    
+    const timeData = {
+      'current': {
+        times: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+        title: 'Campus Activity Heatmap (24h)'
+      },
+      '1hour': {
+        times: ['Now', '+1hr', '+2hr', '+3hr', '+4hr'],
+        title: 'Campus Activity Heatmap (Next 4 Hours)'
+      },
+      '2hours': {
+        times: ['Now', '+2hr', '+4hr', '+6hr', '+8hr'],
+        title: 'Campus Activity Heatmap (Next 8 Hours)'
+      },
+      '4hours': {
+        times: ['Now', '+3hr', '+6hr', '+9hr', '+12hr'],
+        title: 'Campus Activity Heatmap (Next 12 Hours)'
+      }
+    };
+
+    const currentTimeData = timeData[predictionTime as keyof typeof timeData] || timeData['current'];
+    
+    // Generate mock heatmap data with slight variations based on time
+    const z = locations.map((_, i) => 
+      currentTimeData.times.map((_, j) => {
+        const baseActivity = [85, 70, 60, 75, 90, 55][i]; // Base activity per location
+        const timeModifier = [0.8, 0.9, 1.0, 1.1, 1.0, 0.7][j]; // Time-based modifier
+        return Math.floor(baseActivity * timeModifier + Math.random() * 10);
+      })
+    );
+
+    return {
+      data: [{
+        z: z,
+        x: currentTimeData.times,
+        y: locations,
+        type: 'heatmap' as const,
+        colorscale: 'Viridis'
+      }],
+      layout: {
+        title: { text: currentTimeData.title },
+        xaxis: { title: { text: 'Time' } },
+        yaxis: { title: { text: 'Locations' } },
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        font: { color: '#e5e7eb' },
+        margin: { t: 50, b: 50, l: 100, r: 50 }
+      }
+    };
+  };
+
   return (
     <div className="space-y-6">
       <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
@@ -100,8 +463,9 @@ const PredictiveMonitoring: React.FC = () => {
               onChange={(e) => setSelectedEntity(e.target.value)}
               className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-blue-400 focus:outline-none"
             >
-              <option value="ST20001">Rohan Gupta (S68445)</option>
-              <option value="SF5001">Priya Kumar (S34050)</option>
+              {/* option values are the actual entity IDs used in mock data */}
+              <option value="S68445">Rohan Gupta (S68445)</option>
+              <option value="S34050">Priya Kumar (S34050)</option>
               <option value="LB445">Lab Equipment LAB_445</option>
             </select>
           </div>
@@ -114,9 +478,9 @@ const PredictiveMonitoring: React.FC = () => {
               className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-blue-400 focus:outline-none"
             >
               <option value="current">Current Time</option>
-              <option value="1hour">+1 Hour</option>
-              <option value="2hours">+2 Hours</option>
-              <option value="4hours">+4 Hours</option>
+              <option value="1hour">+4 Hour</option>
+              <option value="2hours">+8 Hours</option>
+              <option value="4hours">+12 Hours</option>
             </select>
           </div>
         </div>
@@ -129,64 +493,137 @@ const PredictiveMonitoring: React.FC = () => {
           Location Predictions
         </h3>
         
-        {mockPredictions.map((prediction) => (
-          <div key={prediction.entityId} className="space-y-4">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h4 className="font-medium">{prediction.entityName}</h4>
-                <p className="text-sm text-gray-400">Entity ID: {prediction.entityId}</p>
-              </div>
-              <div className="text-right">
-                <span className={`text-lg font-bold ${getProbabilityColor(prediction.probability)}`}>
-                  {prediction.probability}%
-                </span>
-                <p className="text-sm text-gray-400">Confidence</p>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <div>
-                <h5 className="font-medium mb-3 text-blue-400 flex items-center">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  Predicted Location
-                </h5>
-                <div className="p-4 bg-gray-700 rounded-lg">
-                  <p className="font-medium text-green-400">{prediction.predictedLocation}</p>
-                  <p className="text-sm text-gray-300 mt-1">Time Window: {prediction.timeWindow}</p>
+        {/* Show only the prediction for the currently selected entity */}
+        {(() => {
+          const predictions = getPredictionsForTime(predictionTime);
+          const current = predictions[selectedEntity as keyof typeof predictions];
+          if (!current) {
+            return (
+              <div className="p-4 text-gray-400">No predictions available for the selected entity.</div>
+            );
+          }
+
+          const prediction = current;
+          return (
+            <div key={prediction.entityId} className="space-y-4">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h4 className="font-medium">{prediction.entityName}</h4>
+                  <p className="text-sm text-gray-400">Entity ID: {prediction.entityId}</p>
                 </div>
-                
-                {prediction.missingDataPoints.length > 0 && (
-                  <div className="mt-4">
-                    <h6 className="font-medium mb-2 text-yellow-400">Missing Data Points</h6>
-                    <ul className="space-y-1">
-                      {prediction.missingDataPoints.map((point, index) => (
-                        <li key={index} className="text-sm text-gray-400 flex items-center">
-                          <AlertCircle className="h-3 w-3 text-yellow-400 mr-2" />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                <div className="text-right">
+                  <span className={`text-lg font-bold ${getProbabilityColor(prediction.probability)}`}>
+                    {prediction.probability}%
+                  </span>
+                  <p className="text-sm text-gray-400">Confidence</p>
+                </div>
               </div>
-              
-              <div>
-                <h5 className="font-medium mb-3 text-purple-400 flex items-center">
-                  <Brain className="h-4 w-4 mr-2" />
-                  ML Reasoning
-                </h5>
-                <ul className="space-y-2">
-                  {prediction.reasoning.map((reason, index) => (
-                    <li key={index} className="text-sm text-gray-300 flex items-start">
-                      <CheckCircle className="h-4 w-4 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
-                      {reason}
-                    </li>
-                  ))}
-                </ul>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <h5 className="font-medium mb-3 text-blue-400 flex items-center">
+                    <MapPin className="h-4 w-4 mr-2" />
+                    Predicted Location
+                  </h5>
+                  <div className="p-4 bg-gray-700 rounded-lg">
+                    <p className="font-medium text-green-400">{prediction.predictedLocation}</p>
+                    <p className="text-sm text-gray-300 mt-1">Time Window: {prediction.timeWindow}</p>
+                  </div>
+
+                  {prediction.missingDataPoints.length > 0 && (
+                    <div className="mt-4">
+                      <h6 className="font-medium mb-2 text-yellow-400">Missing Data Points</h6>
+                      <ul className="space-y-1">
+                        {prediction.missingDataPoints.map((point, index) => (
+                          <li key={index} className="text-sm text-gray-400 flex items-center">
+                            <AlertCircle className="h-3 w-3 text-yellow-400 mr-2" />
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <div>
+                  <h5 className="font-medium mb-3 text-purple-400 flex items-center">
+                    <Brain className="h-4 w-4 mr-2" />
+                    ML Reasoning
+                  </h5>
+                  <ul className="space-y-2">
+                    {prediction.reasoning.map((reason, index) => (
+                      <li key={index} className="text-sm text-gray-300 flex items-start">
+                        <CheckCircle className="h-4 w-4 text-green-400 mr-2 mt-0.5 flex-shrink-0" />
+                        {reason}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })()}
+      </div>
+
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Probability Distribution Chart */}
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 flex items-center">
+            <BarChart3 className="h-5 w-5 text-blue-400 mr-2" />
+            Probability Distribution
+          </h3>
+          {getProbabilityChartData() && (
+            <Plot
+              data={getProbabilityChartData()!.data}
+              layout={getProbabilityChartData()!.layout}
+              style={{ width: '100%', height: '300px' }}
+              config={{ displayModeBar: false }}
+            />
+          )}
+        </div>
+
+        {/* Location Distribution Pie Chart */}
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 flex items-center">
+            <Activity className="h-5 w-5 text-purple-400 mr-2" />
+            Location Distribution
+          </h3>
+          <Plot
+            data={getLocationDistributionData().data}
+            layout={getLocationDistributionData().layout}
+            style={{ width: '100%', height: '300px' }}
+            config={{ displayModeBar: false }}
+          />
+        </div>
+
+        {/* Confidence Trend Chart */}
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 flex items-center">
+            <TrendingUp className="h-5 w-5 text-green-400 mr-2" />
+            Confidence Trend
+          </h3>
+          <Plot
+            data={getConfidenceTrendData().data}
+            layout={getConfidenceTrendData().layout}
+            style={{ width: '100%', height: '300px' }}
+            config={{ displayModeBar: false }}
+          />
+        </div>
+
+        {/* Location Heatmap */}
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 flex items-center">
+            <MapPin className="h-5 w-5 text-orange-400 mr-2" />
+            Activity Heatmap
+          </h3>
+          <Plot
+            data={getLocationHeatmapData().data}
+            layout={getLocationHeatmapData().layout}
+            style={{ width: '100%', height: '300px' }}
+            config={{ displayModeBar: false }}
+          />
+        </div>
       </div>
 
       {/* Missing Entities Alert */}

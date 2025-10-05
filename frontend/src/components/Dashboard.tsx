@@ -1,9 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { Users, Wifi, CreditCard, BookOpen, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Users, Wifi, CreditCard, BookOpen, AlertTriangle, TrendingUp, Shield, Search, Activity, Clock, LogOut } from 'lucide-react';
+import EntityResolver from './EntityResolver';
+import TimelineView from './TimelineView';
+import PredictiveMonitoring from './PredictiveMonitoring';
+import SecurityAlerts from './SecurityAlerts';
 
-const Dashboard: React.FC = () => {
+interface User {
+  email: string;
+  fullName?: string;
+}
+
+interface DashboardProps {
+  user: User;
+  onSignOut: () => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ user, onSignOut }) => {
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [activeEntities, setActiveEntities] = useState<number | null>(null);
   const [wifiConnections, setWifiConnections] = useState<number | null>(null);
+
+  const tabs = [
+    { id: 'dashboard', label: 'Dashboard', icon: Shield },
+    { id: 'resolver', label: 'Entity Resolution', icon: Search },
+    { id: 'timeline', label: 'Activity Timeline', icon: Activity },
+    { id: 'monitoring', label: 'Predictive Monitoring', icon: Clock },
+    { id: 'alerts', label: 'Security Alerts', icon: AlertTriangle },
+  ];
+
+  const handleSignOut = () => {
+    onSignOut();
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -42,16 +69,57 @@ const Dashboard: React.FC = () => {
     { id: 3, entity: 'Priya Malhotra (T7369)', type: 'Anomalous Pattern', duration: '6 hours', severity: 'low' },
   ];
 
-  const topEntities = [
-    { name: 'Library - Main Floor', type: 'Location', activity: 2847, confidence: 98.2 },
-    { name: 'Student Center WiFi', type: 'Network', activity: 1923, confidence: 97.1 },
-    { name: 'Engineering Lab A', type: 'Location', activity: 876, confidence: 95.8 },
-  ];
 
   return (
-    <div className="space-y-6">
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="min-h-screen bg-gray-900 text-white">
+      <header className="bg-gray-800 border-b border-gray-700 px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Shield className="h-8 w-8 text-blue-400" />
+            <h1 className="text-xl font-bold">Campus Security & Entity Resolution System</h1>
+          </div>
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 text-sm text-gray-300">
+              <Users className="h-4 w-4" />
+              <span>Welcome, {user.fullName || user.email}</span>
+            </div>
+            <button
+              onClick={handleSignOut}
+              className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg transition-colors"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <nav className="bg-gray-800 border-b border-gray-700">
+        <div className="px-6">
+          <div className="flex space-x-8">
+            {tabs.map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id)}
+                className={`flex items-center space-x-2 py-4 border-b-2 transition-colors ${
+                  activeTab === id
+                    ? 'border-blue-400 text-blue-400'
+                    : 'border-transparent text-gray-400 hover:text-gray-300'
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                <span>{label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </nav>
+
+      <main className="p-6">
+        {activeTab === 'dashboard' && (
+          <div className="space-y-6">
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {stats.map((stat, index) => (
           <div key={index} className="bg-gray-800 rounded-lg p-6 border border-gray-700">
             <div className="flex items-center justify-between">
@@ -125,6 +193,13 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+          </div>
+        )}
+        {activeTab === 'resolver' && <EntityResolver />}
+        {activeTab === 'timeline' && <TimelineView />}
+        {activeTab === 'monitoring' && <PredictiveMonitoring />}
+        {activeTab === 'alerts' && <SecurityAlerts />}
+      </main>
     </div>
   );
 };
@@ -143,7 +218,7 @@ const TopActivitySources: React.FC = () => {
       .then((data) => {
         if (Array.isArray(data.top_locations)) {
           // Map backend data to UI format
-          setSources(data.top_locations.map((loc, idx) => ({
+          setSources(data.top_locations.map((loc: any, idx: number) => ({
             name: loc.room_id || `Location ${idx + 1}`,
             type: 'Location',
             activity: loc.visits,
