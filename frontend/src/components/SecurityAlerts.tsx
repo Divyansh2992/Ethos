@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertTriangle, Shield, Clock, MapPin, User, Wifi, CreditCard, Eye, Filter, Search, Bell } from 'lucide-react';
+import { AlertTriangle, Shield, Clock, MapPin, User, Wifi, Eye, Filter, Search, Bell } from 'lucide-react';
 
 interface SecurityAlert {
   id: string;
@@ -445,7 +445,7 @@ const SecurityAlerts: React.FC = () => {
                 )}
                 
                 <div className="flex space-x-3 pt-4 border-t border-gray-700">
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm">
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors text-sm" onClick={() => window.alert('Investigation email has been sent to the assigned team.') }>
                     Investigate
                   </button>
                   <button className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors text-sm">

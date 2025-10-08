@@ -41,20 +41,20 @@ const PredictiveMonitoring: React.FC = () => {
           confidence: 78.5,
           missingDataPoints: ['Current study session status', 'Library exit logs']
         },
-        'LB445': {
-          entityId: 'LB445',
-          entityName: 'Lab Equipment LAB_445',
-          predictedLocation: 'Chemistry Lab A (stationary)',
-          probability: 95.2,
+        'S51234': {
+          entityId: 'S51234',
+          entityName: 'Aarav Singh',
+          predictedLocation: 'Student Center - Lounge B',
+          probability: 83.7,
           timeWindow: 'Current',
           reasoning: [
-            'Equipment stationary in Chemistry Lab A',
-            'No maintenance or movement logs in system',
-            'High probability of remaining in current location',
-            'Equipment tracking shows no recent movement'
+            'Last WiFi ping near Student Center Lounge B',
+            'Break between classes aligns with lounge visits',
+            'Calendar shows no conflicting classes in the next hour',
+            'Historical pattern: 80% chance of staying in lounge during breaks'
           ],
-          confidence: 95.2,
-          missingDataPoints: ['Physical verification', 'Maintenance schedule check']
+          confidence: 83.7,
+          missingDataPoints: ['Class schedule change updates', 'Recent access logs']
         }
       },
       '1hour': {
@@ -88,20 +88,20 @@ const PredictiveMonitoring: React.FC = () => {
           confidence: 68.3,
           missingDataPoints: ['Study session end time', 'Meal schedule']
         },
-        'LB445': {
-          entityId: 'LB445',
-          entityName: 'Lab Equipment LAB_445',
-          predictedLocation: 'Chemistry Lab A (stationary)',
-          probability: 92.8,
+        'S51234': {
+          entityId: 'S51234',
+          entityName: 'Aarav Singh',
+          predictedLocation: 'Student Center - Lounge B',
+          probability: 70.4,
           timeWindow: 'Next 4 Hours',
           reasoning: [
-            'Equipment remains stationary unless maintenance scheduled',
-            'No maintenance logs for next 4 hours',
-            'High probability of continued stationary state',
-            'Equipment tracking shows stable location'
+            'Break block covers most of the next 3 hours',
+            'High probability of staying around Student Center before next class',
+            'No meetings on calendar during this window',
+            'Previous weeks show similar mid-day lounge dwell time'
           ],
-          confidence: 92.8,
-          missingDataPoints: ['Maintenance schedule', 'Equipment status check']
+          confidence: 70.4,
+          missingDataPoints: ['Next class room confirmation', 'Presence check-in']
         }
       },
       '2hours': {
@@ -135,20 +135,20 @@ const PredictiveMonitoring: React.FC = () => {
           confidence: 65.2,
           missingDataPoints: ['Study session end time', 'Evening schedule']
         },
-        'LB445': {
-          entityId: 'LB445',
-          entityName: 'Lab Equipment LAB_445',
-          predictedLocation: 'Chemistry Lab A (stationary)',
-          probability: 89.5,
+        'S51234': {
+          entityId: 'S51234',
+          entityName: 'Aarav Singh',
+          predictedLocation: 'Library - Quiet Zone',
+          probability: 66.8,
           timeWindow: 'Next 8 Hours',
           reasoning: [
-            'Equipment likely to remain stationary',
-            'No maintenance scheduled for next 8 hours',
-            'High probability of continued stationary state',
-            'Equipment tracking shows stable location'
+            'Likely transition to Library for afternoon study session',
+            'Past behavior shows library visit after Student Center break',
+            'No evening labs scheduled',
+            'Study group meets in Library on similar days'
           ],
-          confidence: 89.5,
-          missingDataPoints: ['Maintenance schedule', 'Equipment status']
+          confidence: 66.8,
+          missingDataPoints: ['Study group confirmation', 'Seat reservation logs']
         }
       },
       '4hours': {
@@ -182,20 +182,20 @@ const PredictiveMonitoring: React.FC = () => {
           confidence: 72.1,
           missingDataPoints: ['Evening schedule', 'Dormitory access patterns']
         },
-        'LB445': {
-          entityId: 'LB445',
-          entityName: 'Lab Equipment LAB_445',
-          predictedLocation: 'Chemistry Lab A (stationary)',
-          probability: 85.3,
+        'S51234': {
+          entityId: 'S51234',
+          entityName: 'Aarav Singh',
+          predictedLocation: 'Dormitory Building B',
+          probability: 61.2,
           timeWindow: 'Next 12 Hours',
           reasoning: [
-            'Equipment likely to remain stationary',
-            'Possible maintenance check in 9 hours',
-            'Moderate probability of continued stationary state',
-            'Equipment tracking shows stable location'
+            'Evening pattern shows return to dormitory after study',
+            'No late-night activities on calendar',
+            'Meal break likely before heading back to dorm',
+            'Consistent dorm return time on previous weeks'
           ],
-          confidence: 85.3,
-          missingDataPoints: ['Maintenance schedule', 'Equipment status']
+          confidence: 61.2,
+          missingDataPoints: ['Dinner reservation logs', 'Dorm access events']
         }
       }
     };
@@ -219,17 +219,17 @@ const PredictiveMonitoring: React.FC = () => {
       ]
     },
     {
-      id: 'LB445',
-      name: 'Lab Equipment LAB_445',
-      type: 'Asset',
-      lastSeen: '2024-01-15T08:45:00Z',
-      location: 'Chemistry Lab A',
-      duration: '8 hours',
-      riskLevel: 'high',
+      id: 'S51234',
+      name: 'Aarav Singh',
+      type: 'Student',
+      lastSeen: '2024-01-15T11:20:00Z',
+      location: 'Student Center - Lounge B',
+      duration: '6 hours',
+      riskLevel: 'medium',
       predictions: [
-        { location: 'Same location (stationary equipment)', probability: 89.5 },
-        { location: 'Maintenance room', probability: 8.2 },
-        { location: 'Storage facility', probability: 2.3 }
+        { location: 'Library - Quiet Zone', probability: 66.8 },
+        { location: 'Student Center - Lounge B', probability: 23.1 },
+        { location: 'Dormitory Building B', probability: 10.1 }
       ]
     }
   ];
@@ -307,11 +307,12 @@ const PredictiveMonitoring: React.FC = () => {
         { label: 'Engineering Building', value: 7 },
         { label: 'Other', value: 3 }
       ],
-      'LB445': [
-        { label: 'Chemistry Lab A', value: 90 },
-        { label: 'Maintenance Room', value: 5 },
-        { label: 'Storage Facility', value: 3 },
-        { label: 'Other Labs', value: 2 }
+      'S51234': [
+        { label: 'Student Center', value: 40 },
+        { label: 'Library', value: 30 },
+        { label: 'Engineering Building', value: 15 },
+        { label: 'Dormitory', value: 10 },
+        { label: 'Other', value: 5 }
       ]
     };
 
@@ -466,7 +467,7 @@ const PredictiveMonitoring: React.FC = () => {
               {/* option values are the actual entity IDs used in mock data */}
               <option value="S68445">Rohan Gupta (S68445)</option>
               <option value="S34050">Priya Kumar (S34050)</option>
-              <option value="LB445">Lab Equipment LAB_445</option>
+              <option value="S51234">Aarav Singh (S51234)</option>
             </select>
           </div>
           
@@ -626,58 +627,60 @@ const PredictiveMonitoring: React.FC = () => {
         </div>
       </div>
 
-      {/* Missing Entities Alert */}
-      <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
-        <h3 className="text-lg font-semibold mb-4 flex items-center">
-          <AlertCircle className="h-5 w-5 text-red-400 mr-2" />
-          Entities Not Observed (12+ Hours)
-        </h3>
-        
-        <div className="space-y-4">
-          {missingEntities.map((entity) => (
-            <div key={entity.id} className="bg-gray-700 rounded-lg p-4 border-l-4 border-red-500">
-              <div className="flex items-center justify-between mb-3">
-                <div>
-                  <h4 className="font-medium">{entity.name}</h4>
-                  <p className="text-sm text-gray-400">{entity.type} • ID: {entity.id}</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${getRiskColor(entity.riskLevel)}`}>
-                    {entity.riskLevel.toUpperCase()} RISK
-                  </span>
-                  <span className="text-sm text-gray-400">
-                    Missing: {entity.duration}
-                  </span>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div>
-                  <p className="text-sm text-gray-400 mb-1">Last Seen Location:</p>
-                  <p className="text-blue-400 font-medium">{entity.location}</p>
-                  <p className="text-sm text-gray-400">
-                    {new Date(entity.lastSeen).toLocaleString()}
-                  </p>
+      {/* Missing Entities Alert (disabled) */}
+      {false && (
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700">
+          <h3 className="text-lg font-semibold mb-4 flex items-center">
+            <AlertCircle className="h-5 w-5 text-red-400 mr-2" />
+            Entities Not Observed (12+ Hours)
+          </h3>
+          
+          <div className="space-y-4">
+            {missingEntities.map((entity) => (
+              <div key={entity.id} className="bg-gray-700 rounded-lg p-4 border-l-4 border-red-500">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <h4 className="font-medium">{entity.name}</h4>
+                    <p className="text-sm text-gray-400">{entity.type} • ID: {entity.id}</p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className={`px-2 py-1 rounded text-xs font-medium ${getRiskColor(entity.riskLevel)}`}>
+                      {entity.riskLevel.toUpperCase()} RISK
+                    </span>
+                    <span className="text-sm text-gray-400">
+                      Missing: {entity.duration}
+                    </span>
+                  </div>
                 </div>
                 
-                <div>
-                  <p className="text-sm text-gray-400 mb-2">Predicted Locations:</p>
-                  <div className="space-y-1">
-                    {entity.predictions.map((pred, index) => (
-                      <div key={index} className="flex justify-between text-sm">
-                        <span className="text-gray-300">{pred.location}</span>
-                        <span className={getProbabilityColor(pred.probability)}>
-                          {pred.probability}%
-                        </span>
-                      </div>
-                    ))}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-gray-400 mb-1">Last Seen Location:</p>
+                    <p className="text-blue-400 font-medium">{entity.location}</p>
+                    <p className="text-sm text-gray-400">
+                      {new Date(entity.lastSeen).toLocaleString()}
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <p className="text-sm text-gray-400 mb-2">Predicted Locations:</p>
+                    <div className="space-y-1">
+                      {entity.predictions.map((pred, index) => (
+                        <div key={index} className="flex justify-between text-sm">
+                          <span className="text-gray-300">{pred.location}</span>
+                          <span className={getProbabilityColor(pred.probability)}>
+                            {pred.probability}%
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
