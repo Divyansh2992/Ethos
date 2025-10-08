@@ -48,7 +48,8 @@ Below are screenshots of the running frontend UI (copied from `frontend/images/`
 <img src="docs/images/timeline.png" alt="Timeline" width="800" />
 
 ### Predictive Monitoring
-<img src="docs/images/predictive_monitoring.png" alt="Predictive Monitoring" width="800" />
+<img src="docs/images/predictive_monitoring1.png" alt="Predictive Monitoring" width="800" />
+<img src="docs/images/predictive_monitoring2.png" alt="Predictive Monitoring" width="800" />
 
 ### Security Alerts
 <img src="docs/images/security.png" alt="Security Alerts" width="800" />
