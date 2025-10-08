@@ -83,26 +83,3 @@ npm run dev
 ```
 
 The frontend expects the backend API at `http://localhost:3000` by default.
-
-## Security note (what happened)
-An `.env` file and `node_modules/` were accidentally committed earlier. Immediate steps that were taken:
-
-- Added `.gitignore` to stop tracking `node_modules/` and `.env`.
-- Added `.env.example` as a template and removed `.env` and `node_modules/` from the Git index in a commit that was pushed.
-
-If your `.env` contained secrets that were pushed to a public repository, rotate those secrets immediately (API keys, DB credentials, JWT secrets, etc.).
-
-### Purging history (optional)
-To fully remove the files from all commits, rewrite history with `git-filter-repo` or BFG and force-push. This will disrupt clones and forks and should be coordinated with collaborators.
-
-## Next steps and tips
-- Add a pre-commit hook (Husky) to block accidental commits of `.env`.
-- Configure secret scanning on the Git host and restrict repo visibility if necessary.
-- Add documentation for maintainers on how to rotate credentials and how to deploy securely.
-
----
-
-If you'd like, I can (a) copy additional screenshots into `docs/images/`, (b) run a history purge and force-push (with confirmation), or (c) add pre-commit hooks (Husky) to prevent future leaks. Tell me which and I'll proceed.
-
-### Product Development Challenge PDF
-If you have a PDF named `Product Development Challenge.pdf` (containing the spec or pitch deck), place it in the repo root or `docs/` and I can include a short summary and link from this README. If you want, upload the PDF and I'll extract the key points and wire them into this README.
